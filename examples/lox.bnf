@@ -1,0 +1,86 @@
+# Lox language grammar
+# adapted from Rober Nystrom's "Crafting Interpreters":
+# https://craftinginterpreters.com/appendix-i.html
+
+# entry point
+<start> ::= <declaration>+ <EOF> ;
+
+# declarations
+<declaration> ::= <classDecl>
+                | <funDecl>
+                | <varDecl>
+                | <statement> ;
+
+<classDecl>   ::= "class" <SP> <IDENTIFIER> <SP> <inheritDecl>? <SP> "{" <SP> <function>* <SP> "}" ;
+<inheritDecl> ::= "<" <SP> <IDENTIFIER> ;
+<funDecl>     ::= "fun" <SP> <function> ;
+<varDecl>     ::= "var" <SP> <IDENTIFIER> <SP> <varDeclExpr>? ";" ;
+<varDeclExpr> ::= "=" <SP> <expression> ;
+
+# statements
+<statement> ::= <exprStmt>
+              | <forStmt>
+              | <ifStmt>
+              | <printStmt>
+              | <returnStmt>
+              | <whileStmt>
+              | <block> ;
+
+<exprStmt>   ::= <expression> ";" ;
+<forStmt>    ::= "for" "(" <forRange> <SP> <expression>? ";" <expression>? ")" <SP> <statement> ;
+<forRange>   ::= <varDecl> | <exprStmt> | ";" ;
+<ifStmt>     ::= "if" <SP> "(" <expression> ")" <SP> <statement> <SP> <elsePart>? ;
+<elsePart>   ::= "else" <SP> <statement> ;
+<printStmt>  ::= "print" <SP> <expression> ";" ;
+<returnStmt> ::= "return" <SP> <expression>? ";" ;
+<whileStmt>  ::= "while" "(" <expression> ")" <SP> <statement> ;
+<block>      ::= "{" <SP> <declaration>* <SP> "}" ;
+
+# expressions
+<expression>         ::= <assignment> ;
+<assignment>         ::= <callPart>? <IDENTIFIER> <SP> "=" <SP> <assignment> | <logic_or> ;
+<callPart>           ::= <call> "." ;
+<logic_or>           ::= <logic_and> <SP> <logic_andPart>* ;
+<logic_andPart>      ::= "or" <SP> <logic_and> ;
+<logic_and>          ::= <equality> <SP> <logic_andExtra>* ;
+<logic_andExtra>     ::= "and" <SP> <equality> ;
+<equality>           ::= <comparison> <SP> <equalityExtra>* ;
+<equalityOperator>   ::= "!=" | "==" ;
+<equalityExtra>      ::= <equalityOperator> <SP> <comparison> ;
+<comparison>         ::= <term> <SP> <comparisonExtra>* ;
+<inequalityOperator> ::= ">" | ">=" | "<" | "<=" ;
+<comparisonExtra>    ::= <inequalityOperator> <SP> <term> ;
+<term>               ::= <factor> <SP> <termExtra>* ;
+<addOperator>        ::= "-" | "+" ;
+<termExtra>          ::= <addOperator> <SP> <factor> ;
+<factor>             ::= <unary> <SP> <factorExtra>* ;
+<multOperator>       ::= "/" | "*" ;
+<factorExtra>        ::= <multOperator> <SP> <unary> ;
+<unary>              ::= <unaryOperator> <SP> <unary> | <call> ;
+<unaryOperator>      ::= "!" | "-" ;
+<call>               ::= <primary> <callArgs>* ;
+<callArgs>           ::= "(" <arguments>? ")" | "." <IDENTIFIER> ;
+<primary>            ::= "true"
+                       | "false"
+                       | "nil"
+                       | "this"
+                       | <NUMBER>
+                       | <STRING>
+                       | <IDENTIFIER>
+                       | "(" <expression> ")"
+                       | "super" "." <IDENTIFIER> ;
+
+
+# helper rules
+<function>        ::= <IDENTIFIER> "(" <parameters>? ")" <SP> <block> ;
+<parameters>      ::= <IDENTIFIER> <parametersExtra>* ;
+<parametersExtra> ::= "," <SP> <IDENTIFIER> ;
+<arguments>       ::= <expression> <argumentsExtra>* ;
+<argumentsExtra>  ::= "," <SP> <expression> ;
+
+# basic terminal rules
+<IDENTIFIER> ::= /[A-Za-z_][A-Za-z0-9_]*/ ;
+<NUMBER>     ::= /[1-9]\d*(.\d)?/ ;
+<STRING>     ::= '"' /[A-Za-z0-9 ]+/ '"' ;
+<EOF>        ::= "" ;
+<SP>         ::= " " ;

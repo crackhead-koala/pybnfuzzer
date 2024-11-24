@@ -1,0 +1,6 @@
+<start>            ::= <compilation-unit>* | <repeat>* ;
+<compilation-unit> ::= <inc-dec>* | <move-pointer>* | <io>* | <repeat>* ;
+<repeat>           ::= "[" <compilation-unit>+ "]" ;
+<inc-dec>          ::= "+" | "-" ;
+<move-pointer>     ::= ">" | "<" ;
+<io>               ::= "." | "," ;

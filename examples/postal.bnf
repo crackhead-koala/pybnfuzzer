@@ -1,0 +1,21 @@
+# adapted from:
+# https://en.wikipedia.org/wiki/Backus–Naur_form#Example
+<start>         ::= <namepart> <streetaddress> <zippart> ;
+<namepart>      ::= <personalpart> <sp> <lastname> <sp> <optsuffixpart> <EOL> | <personalpart> <sp> <namepart> ;
+<personalpart>  ::= <firstname> | <initial> "." ;
+<streetaddress> ::= <housenum> <sp> <streetname> <sp> <optaptnum> <EOL> ;
+<zippart>       ::= <townname> "," <sp> <statecode> <sp> <ZIPcode> <EOL> ;
+<optsuffixpart> ::= "Sr." | "Jr." | <romannumeral> | "" ;
+<optaptnum>     ::= "Apt" <sp> <aptnum> | "" ;
+<firstname>     ::= /[A-Z][a-z]{3,7}/ ;
+<lastname>      ::= /[A-Z][a-z]{3,7}/ ;
+<initial>       ::= /[A-Z]/ ;
+<romannumeral>  ::= /M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})/ ;
+<housenum>      ::= /\d+/ ;
+<aptnum>        ::= /\d+/ ;
+<streetname>    ::= "St." <sp> /[A-Z][a-z]{3,7}/ ;
+<townname>      ::= /[A-Z][a-z]{3,7}/ <sp> "city" ;
+<statecode>     ::= /[A-Z]{2}/ ;
+<ZIPcode>       ::= /\d{5}/ ;
+<EOL>           ::= "\n" ;
+<sp>            ::= " " ;
