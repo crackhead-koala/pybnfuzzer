@@ -1,6 +1,20 @@
 # BNF Fuzzer in Python
 A simple tool to generate random strings based on a [BNF grammar](https://en.wikipedia.org/wiki/Backus–Naur_form). Inspired by [BNF Fuzzer in Go](https://github.com/rexim/bnfuzzer) by @rexim; although no code was taken from their project, just the idea.
 
+## To-Do
+- [ ] Add support for rule grouping
+- [ ] Implement something more performant than a recursive descent parser
+
+Rule grouping, e.g.
+
+```
+<float-literal> ::= <digit>+ ( "." digit+ )? ;
+```
+
+is the last BNF syntax piece I want to add. Right now parenthesis are lexed into tokens but cause an exception in the parser. The grouping can be simulated with the currently supported syntax by extracting the groups into separate rules — but this kind of work really should be done by the parser.
+
+I also really want this tool to generate arbitrarily long strings from grammars of arbitrary complexity, but at the moment the most interesting examples fail at the generation step due to recursion depth limit. The process should be iterative, not recursive, so maybe it would be a good excercise to implement a small "bytecode VM" or an automata.
+
 ## Quick Start
 Clone this repo and install the requirements. Note that you must use Python version 3.12 or higher:
 
