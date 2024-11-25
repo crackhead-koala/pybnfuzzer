@@ -70,7 +70,6 @@
                        | "(" <expression> ")"
                        | "super" "." <IDENTIFIER> ;
 
-
 # helper rules
 <function>        ::= <IDENTIFIER> "(" <parameters>? ")" <SP> <block> ;
 <parameters>      ::= <IDENTIFIER> <parametersExtra>* ;
@@ -82,5 +81,5 @@
 <IDENTIFIER> ::= /[A-Za-z_][A-Za-z0-9_]*/ ;
 <NUMBER>     ::= /[1-9]\d*(.\d)?/ ;
 <STRING>     ::= '"' /[A-Za-z0-9 ]+/ '"' ;
-<EOF>        ::= "" ;
+<EOF>        ::= "\n" ;
 <SP>         ::= " " ;
